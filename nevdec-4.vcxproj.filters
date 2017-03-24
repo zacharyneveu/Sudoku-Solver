@@ -18,5 +18,30 @@
     <Text Include="Readme.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="sudoku1.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sudoku2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sudoku3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="d_except.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="d_matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="p4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

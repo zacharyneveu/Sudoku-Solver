@@ -147,6 +147,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="Readme.txt" />
+    <Text Include="sudoku1.txt" />
+    <Text Include="sudoku2.txt" />
+    <Text Include="sudoku3.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="d_except.h" />
+    <ClInclude Include="d_matrix.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="p4.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
