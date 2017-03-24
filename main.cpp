@@ -40,6 +40,8 @@ int main()
 		cout << ex.what() << endl;
 		exit(1);
 	}
+	system("pause");
+	return 0;
 }
 //TODO Fix this, if we even need it
 int squareNumber(int i, int j)
