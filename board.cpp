@@ -22,7 +22,7 @@ void board::clear()
 // Mark all possible values as legal for each board entry
 {
    for (int i = 0; i < size; i++)
-	   for (int j = 0; i < size; j++)
+	   for (int j = 0; j < size; j++)
       {
          b[i][j].clear();
       }

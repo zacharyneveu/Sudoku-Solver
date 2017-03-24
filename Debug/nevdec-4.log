@@ -1,2 +1,5 @@
-﻿  nevdec-4.vcxproj -> C:\Users\Jake\Documents\GitHub\Algo_P4\Debug\nevdec-4.exe
-  nevdec-4.vcxproj -> C:\Users\Jake\Documents\GitHub\Algo_P4\Debug\nevdec-4.pdb (Full PDB)
+﻿  board.cpp
+c:\users\jake\documents\github\algo_p4\board.cpp(54): warning C4018: '<': signed/unsigned mismatch
+c:\users\jake\documents\github\algo_p4\board.cpp(55): error C2228: left of '.getValue' must have class/struct/union
+  c:\users\jake\documents\github\algo_p4\board.cpp(55): note: type is 'int'
+c:\users\jake\documents\github\algo_p4\board.cpp(84): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)

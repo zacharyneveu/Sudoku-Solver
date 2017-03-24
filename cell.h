@@ -28,4 +28,5 @@ public:
 		value = -1;
 		poss.clear();
 	}
+
 };
