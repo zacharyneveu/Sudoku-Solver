@@ -12,11 +12,10 @@
 using namespace std;
 
 board::board(int sqSize)
-   : b(sqSize,sqSize)
 // Board constructor
 {
+	b.resize(sqSize, sqSize);
 	size = sqSize;
-    clear();
 }
 
 void board::clear()
