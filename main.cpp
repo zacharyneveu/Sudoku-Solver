@@ -6,6 +6,9 @@
 #include "d_except.h"
 #include <list>
 #include <fstream>
+#include "board.h"
+
+int squareNumber(int i, int j);
 
 int main()
 {
@@ -23,13 +26,13 @@ int main()
 
 	try
 	{
-		board b1(SquareSize);
+		board b1(9);
 
 		while (fin && fin.peek() != 'Z')
 		{
 			b1.initialize(fin);
 			b1.print();
-			b1.printConflicts();
+			//b1.printConflicts();
 		}
 	}
 	catch (indexRangeError &ex)
@@ -37,4 +40,14 @@ int main()
 		cout << ex.what() << endl;
 		exit(1);
 	}
+}
+//TODO Fix this, if we even need it
+int squareNumber(int i, int j)
+// Return the square number of cell i,j (counting from left to right,
+// top to bottom.  Note that i and j each go from 1 to BoardSize
+{
+	// Note that (int) i/SquareSize and (int) j/SquareSize are the x-y
+	// coordinates of the square that i,j is in.  
+
+	return 0;
 }
