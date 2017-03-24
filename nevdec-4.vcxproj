@@ -152,6 +152,7 @@
     <Text Include="sudoku3.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cell.h" />
     <ClInclude Include="d_except.h" />
     <ClInclude Include="d_matrix.h" />
   </ItemGroup>
