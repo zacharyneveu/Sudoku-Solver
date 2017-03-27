@@ -8,6 +8,7 @@
 #include <fstream>
 #include "cell.h"
 #include "board.h"
+#include <string>
 
 using namespace std;
 
@@ -22,7 +23,7 @@ void board::clear()
 // Mark all possible values as legal for each board entry
 {
    for (int i = 0; i < size; i++)
-	   for (int j = 0; i < size; j++)
+	   for (int j = 0; j < size; j++)
       {
          b[i][j].clear();
       }
@@ -48,11 +49,15 @@ void board::initialize(ifstream &fin)
         }
 }
 
-ostream &operator<<(ostream &ostr, vector<int> &v)
+ostream &operator<<(ostream &ostr, vector<Cell> &v)
 // Overloaded output operator for vector class.
 {
-   for (int i = 0; i < v.size(); i++)
-      ostr << v[i] << " ";
+	for (int i = 0; i < v.size(); i++) {
+		ostr << (v[i].getValue() == -1 ? "." : to_string(v[i].getValue()));
+		if (i % 3 == 2) {
+			ostr << "  ";
+		}
+	}
    return ostr <<endl;
 }
 
@@ -88,6 +93,10 @@ void board::print()
 // Prints the current board.
 {
 	for (int i = 0; i < size; i++) {
-
+		cout << b[i];
+		if (i % 3 == 2) {
+			cout << endl;
+		}
    }
+	cout << endl;
 }

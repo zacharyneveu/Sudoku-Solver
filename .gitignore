@@ -77,3 +77,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+*.tlog
+Debug/nevdec-4.log
+*.pdb
+*.idb
+*.tlog
