@@ -24,6 +24,7 @@ public:
 	Cell getCell(int, int);
 	void setCell(int, int);
 	void setCell(int, int, int);
+	void findSquare(int &j, int &k);
 
 private:
 

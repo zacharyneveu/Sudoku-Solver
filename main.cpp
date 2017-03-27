@@ -13,7 +13,6 @@ int squareNumber(int i, int j);
 int main()
 {
 	ifstream fin;
-
 	// Read the sample grid from the file.
 	string fileName = "sudoku1.txt";
 

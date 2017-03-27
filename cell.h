@@ -22,7 +22,7 @@ public:
 	int getNumPossible() { return poss.size(); }
 	int removePossibily(int value) { poss.erase(value); }
 	int addPossibily(int value) { poss.insert(value); }
-	Cell(int vaule) { this->value = value; }
+	Cell(int value) { this->value = value; }
 	Cell() { this->value = -1; }
 	void clear() {
 		value = -1;

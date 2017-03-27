@@ -100,3 +100,29 @@ void board::print()
    }
 	cout << endl;
 }
+
+void board::findSquare(int &j, int &k)
+//Returns the index of a square with j items in its possibility list.  
+//Returns -1 if no squares are available
+{
+	for (int i=0; i<size; i++)
+	{
+		for (int g=0; g<size; g++)
+		{
+			Cell thiscell = getCell(i,g);
+
+			if (thiscell.getNumPossible() == j)
+			{
+				j = i;
+				k = g;
+				return;
+			}
+		}
+
+	}
+}
+
+bool board::place(int xindex, int yindex,)
+//tries filling square at index with first item in possibility list.
+//Updates lists, and if error, try next possibility.  Return true on
+//success, false if all possibilities are tried and all cause errors.
