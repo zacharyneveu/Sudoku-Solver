@@ -31,7 +31,44 @@ int main()
 		{
 			b1.initialize(fin);
 			b1.print();
-			//b1.printConflicts();
+			b1.printConfs();
+
+			//temp variables
+			int r, c, value;
+			char choice;
+			while(1)
+			{
+
+				cout<<"Enter row of cell to edit (from 1-9)"<<endl;
+				cin>>r;
+				r--; 	//make indices match
+				cout<<"Enter column of cell to edit (from 1-9)"<<endl;
+				cin>>c;
+				c--;	//make indices match
+
+				cout<<"Press s to set a cell, c to clear one or q to quit"<<endl;
+				cin>>choice;
+				if(choice == 'q')
+					break;
+				else if(choice == 's')
+				{
+					cout<<"Enter the value to be inserted"<<endl;
+					cin>>value;
+					b1.setCell(r, c, value);
+				}
+				else if(choice =='c')
+				{
+					b1.clearCell(r, c);
+				}
+				else
+				{
+					cout<<"Sorry, invalid operation"<<endl;
+					continue;
+				}
+
+				b1.print();
+				b1.printConfs();
+			}
 		}
 	}
 	catch (indexRangeError &ex)
@@ -40,15 +77,5 @@ int main()
 		exit(1);
 	}
 	system("pause");
-	return 0;
-}
-//TODO Fix this, if we even need it
-int squareNumber(int i, int j)
-// Return the square number of cell i,j (counting from left to right,
-// top to bottom.  Note that i and j each go from 1 to BoardSize
-{
-	// Note that (int) i/SquareSize and (int) j/SquareSize are the x-y
-	// coordinates of the square that i,j is in.  
-
 	return 0;
 }

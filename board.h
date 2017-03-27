@@ -17,14 +17,17 @@ class board
 {
 public:
 	board(int);
-	void clear();
+	void clearBoard();
+	void clearCell(int, int);
 	void initialize(ifstream &fin);
 	void print();
+	void printConfs();
 	bool isBlank(int, int);
 	Cell getCell(int, int);
 	void setCell(int, int);
 	void setCell(int, int, int);
-	void findSquare(int &j, int &k);
+	bool updateConfs(int, int);
+	int getSquare(int, int);
 
 private:
 
@@ -32,4 +35,7 @@ private:
 	// dimension, i.e., they are each (BoardSize+1) * (BoardSize+1)
 	int size;
 	matrix<Cell> b;
+	matrix<bool> confrows;
+	matrix<bool> confcols;
+	matrix<bool> confsqrs;
 };
