@@ -38,7 +38,14 @@ int main()
 			char choice;
 			while(1)
 			{
+				cout<<"Press s to set a cell, c to clear one or q to quit"<<endl;
+				cin>>choice;
 
+
+				if(choice == 'q')
+					break;
+
+				cout<<"Solved: "<<b1.isSolved()<<endl;
 				cout<<"Enter row of cell to edit (from 1-9)"<<endl;
 				cin>>r;
 				r--; 	//make indices match
@@ -46,11 +53,7 @@ int main()
 				cin>>c;
 				c--;	//make indices match
 
-				cout<<"Press s to set a cell, c to clear one or q to quit"<<endl;
-				cin>>choice;
-				if(choice == 'q')
-					break;
-				else if(choice == 's')
+				if(choice == 's')
 				{
 					cout<<"Enter the value to be inserted"<<endl;
 					cin>>value;
@@ -66,8 +69,9 @@ int main()
 					continue;
 				}
 
-				b1.print();
-				b1.printConfs();
+				b1.print(); //print board
+				cout<<endl; //just for looks
+				b1.printConfs(); //print conflicts
 			}
 		}
 	}

@@ -76,6 +76,33 @@ void board::initialize(ifstream &fin)
         }
 }
 
+bool board::isSolved()
+//This function checks each row, colummn and square to make sure the properties
+//for a solved board are met for each square.
+{
+	for (int i=0; i<size; i++)
+	{
+		for (int j=0; j<size; j++)
+		{
+			//update conflicts for each square
+			updateConfs(i,j);
+			for (int k=0; k<9; k++)
+			{
+				//if any conflict is set to true, puzzle is not solved
+				if (confrows[i][k] == true
+						|| confcols [j][k] == true
+						|| confsqrs[i][k]==true)
+				{
+					return false;
+				}
+			}//end loop over digits
+		}//end loop over columns
+	}//end loop over rows
+	//if all squares don't break, then puzzle is solved!
+	return true;
+}//end function
+
+
 /*
  * ostream &operator<<(ostream &ostr, vector<Cell> &v)
  * // Overloaded output operator for vector class.
@@ -144,28 +171,30 @@ void board::print()
 void board::printConfs()
 //Prints conflict lists for each row, column, and square.
 {
+	cout<<"             Digit: 1 2 3 4 5 6 7 8 9"<<endl;
+	cout<<"-------------------------------------"<<endl;
 	for (int i=1; i<=size; i++)
 	{
-		cout<<"Row "<<i<<" Conflicts: ";
+		cout<<"   Row "<<i<<" Conflicts: ";
 		for (int j=0; j<size; j++)
 		{
-			cout<<confrows[i-1][j];
+			cout<<confrows[i-1][j]<<" ";
 		}
 		cout<<endl;
 
 		cout<<"Column "<<i<<" Conflicts: ";
 		for (int j=0; j<size; j++)
 		{
-			cout<<confcols[i-1][j];
+			cout<<confcols[i-1][j]<<" ";
 		}
 		cout<<endl;
 
 		cout<<"Square "<<i<<" Conflicts: ";
 		for (int j=0; j<size; j++)
 		{
-			cout<<confsqrs[i-1][j];
+			cout<<confsqrs[i-1][j]<<" ";
 		}
-		cout<<endl;
+		cout<<endl<<endl;
 	}
 }
 

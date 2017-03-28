@@ -28,6 +28,7 @@ public:
 	void setCell(int, int, int);
 	bool updateConfs(int, int);
 	int getSquare(int, int);
+	bool isSolved();
 
 private:
 
