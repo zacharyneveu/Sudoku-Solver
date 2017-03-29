@@ -286,6 +286,7 @@ bool board::place(int row, int col)
 			   confsqrs[getSquare(row, col)][i] == false)
 			{
 				b[row][col] = i;
+				updateConfs(row, col);
 				toFill.pop();
 				place(toFill.top()[0], toFill.top()[1]);
 			}
