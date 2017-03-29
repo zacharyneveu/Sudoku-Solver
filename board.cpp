@@ -128,12 +128,14 @@ Cell board::getCell(int i, int j)
 }
 
 void board::setCell(int r, int c) {
+//Overloaded function, sets cell to -1 if passed 2 args
 	b[r][c]=-1;
 	updateConfs(r,c);
 	return;
 }
 
 void board::setCell(int r, int c, int value) {
+//Overloaded function sets sell to 3rd arg if passed 3 cells.
 	b[r][c]=value;
 	updateConfs(r,c);
 	return;
@@ -235,26 +237,32 @@ int board::getSquare(int row, int column)
 	return 3*rowoffset + (column/3);
 }
 
-/*
- * void board::findCell(int j, int k)
- * //Returns the index of a square with j items in its possibility list.
- * //Returns -1 if no squares are available
- * {
- *     for (int i=0; i<size; i++)
- *     {
- *         for (int g=0; g<size; g++)
- *         {
- *             Cell thiscell = getCell(i,g);
- *
- *             if (thiscell.getNumPossible() == j)
- *             {
- *                 j = i;
- *                 k = g;
- *                 return;
- *             }
- *         }
- *
- *     }
- * }
- *
- */
+void board::buildNextList(int j)
+//This function finds an empty square of the grid with j possibilities to fill
+//Version 1: Just find open cell with n possibilities
+//Optimizations: Find a cell in square-line of grid
+{
+	int poss = 0;
+	for (int r=0; r<size; r++)
+	{
+		for (int c=0; c<size; c++)
+		{
+			poss = 0;
+			for (int k=0; k<size; k++)
+			{
+				if(confrows[r][k] == false &&
+				   confcols[c][k] == false &&
+				   confsqrs[getSquare(r, c)][k] == false)
+				{
+					//increment possibilities
+					poss++;
+				}
+			}
+			if (poss == j)
+			{
+				//add cell to list to fill
+				toFill.pushback(getCell(r, c));
+			}
+		}
+	}
+}

@@ -9,6 +9,7 @@
 #include <list>
 #include <fstream>
 #include "cell.h"
+#include <stack>
 
 using namespace std;
 
@@ -30,6 +31,8 @@ public:
 	int getSquare(int, int);
 	bool isSolved();
 
+	void buildNextList(int);
+
 private:
 
 	// The following matrices go from 1 to BoardSize in each
@@ -39,4 +42,6 @@ private:
 	matrix<bool> confrows;
 	matrix<bool> confcols;
 	matrix<bool> confsqrs;
+	stack<cell> filled;
+	stack<cell> toFill;
 };
