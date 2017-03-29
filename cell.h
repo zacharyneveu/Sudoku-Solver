@@ -19,5 +19,5 @@ public:
 	void setValue(int value) { this->value = value; }
 	Cell(int value) { this->value = value; }
 	Cell() { this->value = -1; }
-	int getNumPossible();
+	//int getNumPossible();
 };

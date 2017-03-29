@@ -260,9 +260,36 @@ void board::buildNextList(int j)
 			}
 			if (poss == j)
 			{
+				int toAdd[2] = {r, c};
 				//add cell to list to fill
-				toFill.pushback(getCell(r, c));
+				toFill.push(toAdd);
 			}
 		}
+	}
+}
+
+bool board::place(int row, int col)
+//Places one possible value in a square, recursively calls on next square until
+//puzzle is solved
+{
+	if(isSolved()) //if algorithm is solved
+	{
+		print();
+		return true;
+	}
+	else
+	{
+		for (int i=0; i<size; i++)
+		{
+			if(confrows[row][i] == false &&
+			   confcols[col][i] == false &&
+			   confsqrs[getSquare(row, col)][i] == false)
+			{
+				b[row][col] = i;
+				toFill.pop();
+				place(toFill.top()[0], toFill.top()[1]);
+			}
+		}
+		return false;
 	}
 }
