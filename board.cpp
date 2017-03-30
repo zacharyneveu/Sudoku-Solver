@@ -224,7 +224,7 @@ bool board::updateConfs(int row, int column)
 			noMoves = false;
 		}
 	}
-	return ~noMoves;
+	return !noMoves;
 }
 
 int board::getSquare(int row, int column)
@@ -255,42 +255,86 @@ void board::buildNextList(int j)
 				   confsqrs[getSquare(r, c)][k] == false)
 				{
 					//increment possibilities
+					//debug line
+					//cout<<"poss++"<<endl;
 					poss++;
 				}
 			}
 			if (poss == j)
 			{
-				int toAdd[2] = {r, c};
+				vector<int> toAdd;
+				toAdd.push_back(r);
+				toAdd.push_back(c);
 				//add cell to list to fill
+				//debug line
+				//cout<<"Adding to Stack"<<endl;
 				toFill.push(toAdd);
 			}
 		}
 	}
 }
 
-bool board::place(int row, int col)
+void board::callsolve()
+//overload for use in initial call
+{
+	for(int i=1; i<=size; i++)
+	{
+		buildNextList(i); //used to start the process
+		if(!toFill.empty())
+		{
+			solve(toFill.top());
+			break;
+		}
+		else
+			cout<<"Stack empty for "<<i<<"possibilities"<<endl;
+	}
+}
+
+void board::solve(vector<int> index)
 //Places one possible value in a square, recursively calls on next square until
 //puzzle is solved
 {
-	if(isSolved()) //if algorithm is solved
+	//iterate over all number of possibilities
+	for (int i=0; i<size; i++)
 	{
-		print();
-		return true;
-	}
-	else
-	{
-		for (int i=0; i<size; i++)
+		buildNextList(i);	//build list of all squares with i possibilities
+		if(isSolved()) //if algorithm is solved
 		{
-			if(confrows[row][i] == false &&
-			   confcols[col][i] == false &&
-			   confsqrs[getSquare(row, col)][i] == false)
-			{
-				b[row][col] = i;
-				updateConfs(row, col);
-				toFill.pop();
-				place(toFill.top()[0], toFill.top()[1]);
-			}
+			cout<<"Solved!"<<endl;
+			print();
 		}
-		return false;
-	}
+
+		else if(!toFill.empty())
+		{
+			//iterate over all digits
+			for (int i=0; i<size; i++)
+			{
+				//is digit a possibility? check.
+				if(confrows[index[0]][i] == false &&
+				   confcols[index[1]][i] == false &&
+				   confsqrs[getSquare(index[0], index[1])][i] == false)
+				{
+					//place digit
+					b[index[0]][index[1]] = i;
+					//update conflicts
+					updateConfs(index[0], index[1]);
+					//add square to filled list
+					filled.push(toFill.top());
+					//remove cell from toFill list
+					toFill.pop();
+
+					if(!toFill.empty())
+						//recursively solve next square in list
+						solve(toFill.top());
+					else
+						break; //break digit loop
+				}
+			}//end iterate over all digits
+		}//end else if
+
+		else
+			continue;
+	}//end iterate over all nums of poss
+	cout<<"Board Unsolved"<<endl;
+	print();
 }

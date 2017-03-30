@@ -31,55 +31,16 @@ int main()
 		{
 			b1.initialize(fin);
 			b1.print();
-			b1.printConfs();
-
-			//temp variables
-			int r, c, value;
-			char choice;
-			while(1)
-			{
-				cout<<"Press s to set a cell, c to clear one or q to quit"<<endl;
-				cin>>choice;
-
-
-				if(choice == 'q')
-					break;
-
-				cout<<"Solved: "<<b1.isSolved()<<endl;
-				cout<<"Enter row of cell to edit (from 1-9)"<<endl;
-				cin>>r;
-				r--; 	//make indices match
-				cout<<"Enter column of cell to edit (from 1-9)"<<endl;
-				cin>>c;
-				c--;	//make indices match
-
-				if(choice == 's')
-				{
-					cout<<"Enter the value to be inserted"<<endl;
-					cin>>value;
-					b1.setCell(r, c, value);
-				}
-				else if(choice =='c')
-				{
-					b1.clearCell(r, c);
-				}
-				else
-				{
-					cout<<"Sorry, invalid operation"<<endl;
-					continue;
-				}
-
-				b1.print(); //print board
-				cout<<endl; //just for looks
-				b1.printConfs(); //print conflicts
+			b1.buildNextList(1);
+			b1.callsolve(); //
 			}
 		}
-	}
 	catch (indexRangeError &ex)
 	{
 		cout << ex.what() << endl;
 		exit(1);
 	}
-	system("pause");
+
+	//system("pause");
 	return 0;
 }

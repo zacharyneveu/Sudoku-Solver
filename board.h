@@ -32,7 +32,8 @@ public:
 	bool isSolved();
 
 	void buildNextList(int);
-	bool place(int, int);
+	void callsolve();
+	void solve(vector<int> index);
 
 private:
 
@@ -43,6 +44,6 @@ private:
 	matrix<bool> confrows;
 	matrix<bool> confcols;
 	matrix<bool> confsqrs;
-	stack<int[2]> filled;
-	stack<int[2]> toFill;
+	stack<vector<int>> filled;
+	stack<vector<int>> toFill;
 };

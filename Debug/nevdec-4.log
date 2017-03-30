@@ -1,5 +1,7 @@
 ﻿  board.cpp
-c:\users\jake\documents\github\algo_p4\board.cpp(55): warning C4018: '<': signed/unsigned mismatch
-c:\users\jake\documents\github\algo_p4\board.cpp(89): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-  nevdec-4.vcxproj -> C:\Users\Jake\Documents\GitHub\Algo_P4\Debug\nevdec-4.exe
-  nevdec-4.vcxproj -> C:\Users\Jake\Documents\GitHub\Algo_P4\Debug\nevdec-4.pdb (Full PDB)
+c:\users\zachary\googledrive\documents\algorithms\algo_p4\board.cpp(151): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  main.cpp
+  nevdec-4.vcxproj -> C:\Users\Zachary\GoogleDrive\Documents\Algorithms\Algo_P4\Debug\nevdec-4.exe
+  nevdec-4.vcxproj -> C:\Users\Zachary\GoogleDrive\Documents\Algorithms\Algo_P4\Debug\nevdec-4.pdb (Full PDB)
