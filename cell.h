@@ -17,7 +17,7 @@ private:
 public:
 	int getValue() { return value; }
 	void setValue(int value) { this->value = value; }
+
 	Cell(int value) { this->value = value; }
 	Cell() { this->value = -1; }
-	int getNumPossible();
 };

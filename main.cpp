@@ -29,23 +29,25 @@ int main()
 
 		while (fin && fin.peek() != 'Z')
 		{
-			b1.initialize(fin);
-			b1.print();
-			b1.printConfs();
+			b1.initialize(fin); //Initialize board
 
-			//temp variables
+			//temp variables used in while loop
 			int r, c, value;
 			char choice;
-			while(1)
+			while(!b1.isSolved()) //loop while puzzle not solved
 			{
+				b1.print(); 		//print board
+				b1.printConfs(); 	//print conflicts on board
+
+
+				//get user input for what to do
 				cout<<"Press s to set a cell, c to clear one or q to quit"<<endl;
 				cin>>choice;
 
-
-				if(choice == 'q')
+				if(choice == 'q') //quit option
 					break;
 
-				cout<<"Solved: "<<b1.isSolved()<<endl;
+				//These inputs trigger for all cases except quit
 				cout<<"Enter row of cell to edit (from 1-9)"<<endl;
 				cin>>r;
 				r--; 	//make indices match
@@ -53,28 +55,38 @@ int main()
 				cin>>c;
 				c--;	//make indices match
 
-				if(choice == 's')
+				if(c<0||c>9||r<0||r>9) //range check
 				{
+					cout<<"Not a valid row or column"<<endl;
+					break; //exit program
+				}
+
+				if(choice == 's') //set a cell
+				{
+					//get value to be set from user
 					cout<<"Enter the value to be inserted"<<endl;
 					cin>>value;
 					b1.setCell(r, c, value);
 				}
-				else if(choice =='c')
+				else if(choice =='c') //clear a square
 				{
 					b1.clearCell(r, c);
 				}
-				else
+				else 	//cover default case
 				{
 					cout<<"Sorry, invalid operation"<<endl;
 					continue;
 				}
 
-				b1.print(); //print board
-				cout<<endl; //just for looks
-				b1.printConfs(); //print conflicts
-			}
-		}
-	}
+				//Print whether board is solved or not
+				if(b1.isSolved())
+					cout<<"Puzzle is Solved!"<<endl;
+				else
+					cout<<"Puzzle is Unsolved"<<endl;
+
+			}//end loop until solved
+		}//end loop over file
+	}//end try statement
 	catch (indexRangeError &ex)
 	{
 		cout << ex.what() << endl;
@@ -82,4 +94,4 @@ int main()
 	}
 	system("pause");
 	return 0;
-}
+}//end main function
