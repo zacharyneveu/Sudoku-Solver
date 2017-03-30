@@ -16,27 +16,28 @@ class board
 	// Stores the entire Sudoku board
 {
 public:
-	board(int);
-	void clearBoard();
-	void clearCell(int, int);
-	void initialize(ifstream &fin);
-	void print();
-	void printConfs();
-	bool isBlank(int, int);
-	Cell getCell(int, int);
-	void setCell(int, int);
-	void setCell(int, int, int);
-	bool updateConfs(int, int);
-	int getSquare(int, int);
-	bool isSolved();
+	board(int); //constructor with size
+	void clearBoard(); //clears whole board except pre filled cells
+	void clearCell(int, int); //clears given cell
+	void initialize(ifstream &fin); //initializes conflicts
+	void print(); //prints the puzzle
+	void printConfs(); //prints the conflict lists
+	bool isBlank(int, int); //checks if cell is blank
+	Cell getCell(int, int); //gets the value of a cell
+	void setCell(int, int, int); //sets a cell to given value
+	bool updateConfs(int, int); //updates conflicts and checks for errors
+	int getSquare(int, int); //returns the square number from cell index
+	bool isSolved(); 	//checks if the puzzle is solved
+	bool isPreFilled(int, int); //checks if cell came pre-filled from file
 
 private:
 
 	// The following matrices go from 1 to BoardSize in each
 	// dimension, i.e., they are each (BoardSize+1) * (BoardSize+1)
 	int size;
-	matrix<Cell> b;
-	matrix<bool> confrows;
-	matrix<bool> confcols;
-	matrix<bool> confsqrs;
+	matrix<Cell> b; //stores the board
+	vector<vector<int>> preFilled; //keep track of pre-filled cells
+	matrix<bool> confrows; //stores row conflicts
+	matrix<bool> confcols; //stores column conflicts
+	matrix<bool> confsqrs; //stores square conflicts
 };

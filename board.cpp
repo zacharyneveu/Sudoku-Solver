@@ -27,10 +27,11 @@ board::board(int size)
 void board::clearBoard()
 // Mark all possible values as legal for each board entry
 {
-    for (int i = 0; i < size; i++) //iterate over all rows
-        for (int j = 0; j < size; j++) //iter over cols
+    for (int i = 0; i < size; i++) 		//iterate over all rows
+        for (int j = 0; j < size; j++) 	//iter over cols
         {
-            b[i][j].setValue(-1); //-1 is clear value
+			if(!isPreFilled(i,j))		//make sure not pre filled
+            	b[i][j].setValue(-1); 	//-1 is clear value
         }
 }//end function
 
@@ -38,18 +39,26 @@ void board::clearCell(int r, int c)
 //This function clears the value in a given cell and updates the relevant
 //conflict lists
 {
-    //temp variables
-    int value = getCell(r, c).getValue();
-    int square = getSquare(r, c);
+	if(!isPreFilled(r, c)) //make sure square not pre-filled
+	{
+		//temp variables
+		int value = getCell(r, c).getValue();
+		int square = getSquare(r, c);
 
-    //update conflict lists manually because updateConfs() would not know
-    //what value to set to false
-    confrows[r][value] = false;
-    confcols[c][value] = false;
-    confsqrs[square][value] = false;
+		if(value > 0 && value < size)
+		{
+			//update conflict lists manually because updateConfs() would not know
+			//what value to set to false
+			confrows[r][value] = false;
+			confcols[c][value] = false;
+			confsqrs[square][value] = false;
+		}
 
-    //clear value of square
-    b[r][c].setValue(-1);
+		//clear value of square
+		b[r][c].setValue(-1);
+	}
+	else
+		cout<<"Square Was Pre-Filled, cannot be cleared"<<endl;
 }//end function
 
 void board::initialize(ifstream &fin)
@@ -69,15 +78,22 @@ void board::initialize(ifstream &fin)
             if (ch != '.')
             {
                 setCell(i, j, ch - '0');    // Convert char to int
+
+				//mark squares as pre filled
+				vector<int> toAdd;
+				toAdd.push_back(i);
+				toAdd.push_back(j);
+				preFilled.push_back(toAdd);
             }
-            else
+            else //The char is blank
             {
-                setCell(i, j);
+				//clear cell (i, j)
+				clearCell(i, j);
             }
 
             bool worked = updateConfs(i, j); //update conflicts for each cell
 
-            if (worked == false)
+            if (worked == false) //a square had all conflicts
             {
                 cout << "Impossible Puzzle to Solve" << endl;
             }
@@ -144,18 +160,11 @@ Cell board::getCell(int i, int j)
     }
 }//end function
 
-void board::setCell(int r, int c)
-//Sets a cell to zero if not passed a value
-{
-    b[r][c] = -1;
-    updateConfs(r, c);
-    return;
-}//end function
-
 void board::setCell(int r, int c, int value)
 //sets cell to value if passed a value
 {
-    if (getCell(r, c).getValue() == -1) //make sure already clear
+	//make sure already clear
+    if (getCell(r, c).getValue() == -1 && !isPreFilled(r, c)) 
     {
         b[r][c] = value;
         updateConfs(r, c);
@@ -164,8 +173,6 @@ void board::setCell(int r, int c, int value)
     {
         cout << "That Cell is Already Filled" << endl;
     }
-
-    return;
 }//end function
 
 bool board::isBlank(int i, int j)
@@ -288,3 +295,18 @@ int board::getSquare(int row, int column)
     //middle, or right square
     return 3 * rowoffset + (column / 3);
 }//end function
+
+bool board::isPreFilled(int row, int col)
+{
+	if(!preFilled.empty())
+	{
+		for (int i=0; i<preFilled.size(); i++)
+		{
+			if (preFilled[i][0] == row && preFilled[i][1] == col)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
