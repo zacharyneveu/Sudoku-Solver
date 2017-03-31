@@ -300,6 +300,8 @@ int board::getSquare(int row, int column)
     return 3 * rowoffset + (column / 3);
 }//end function
 
+
+//For part a only. Returns if the selected cell was read in from file, or entered by user.
 bool board::isPreFilled(int row, int col)
 {
     if (!preFilled.empty())
