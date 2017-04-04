@@ -30,6 +30,10 @@ public:
     bool isSolved(); 	//checks if the puzzle is solved
     bool isPreFilled(int, int); //checks if cell came pre-filled from file
 
+	bool isPossible(int, int, int);
+	void findCell(int &row, int &col);
+	bool solve(int count);
+
 private:
 
     // The following matrices go from 1 to BoardSize in each

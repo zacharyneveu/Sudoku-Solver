@@ -44,10 +44,10 @@ void board::clearCell(int r, int c)
     if (!isPreFilled(r, c)) //make sure square not pre-filled
     {
         //temp variables
-        int value = getCell(r, c).getValue();
+        int value = getCell(r, c).getValue()-1;
         int square = getSquare(r, c);
 
-        if (value > 0 && value < size)
+        if (value >= 0 && value < size)
         {
             //update conflict lists manually because updateConfs() would not know
             //what value to set to false
@@ -114,22 +114,10 @@ bool board::isSolved()
     {
         for (int j = 0; j < size; j++) //iterate over cols
         {
-            //update conflicts for each square
-            updateConfs(i, j);
-
-            for (int k = 0; k < 9; k++) //iterate over digits
-            {
-                //if any conflict is set to true, puzzle is not solved
-                if (confrows[i][k] == true
-                        || confcols [j][k] == true
-                        || confsqrs[i][k] == true)
-                {
-                    return false;
-                }
-            }//end loop over digits
+			if(getCell(i,j).getValue() == -1)
+				return false;
         }//end loop over columns
     }//end loop over rows
-
     //if all squares don't break, then puzzle is solved!
     return true;
 }//end function
@@ -167,16 +155,15 @@ Cell board::getCell(int i, int j)
 void board::setCell(int r, int c, int value)
 //sets cell to value if passed a value
 {
-    //make sure already clear
-    if (getCell(r, c).getValue() == -1 && !isPreFilled(r, c))
-    {
-        b[r][c] = value;
-        updateConfs(r, c);
-    }
-    else 	//if cell already filled
-    {
-        cout << "That Cell is Already Filled" << endl;
-    }
+	b[r][c] = value;
+	updateConfs(r, c);
+
+	/*
+     * else 	//if cell already filled
+     * {
+     *     cout << "That Cell is Already Filled" << endl;
+     * }
+	 */
 }//end function
 
 bool board::isBlank(int i, int j)
@@ -270,21 +257,25 @@ bool board::updateConfs(int row, int column)
         confsqrs[square][value - 1] = true;
     }
 
-    //check to make sure moves are still available.  This runs in linear time,
-    //but will run a max of 9 times, and will almost always run far less than
-    //that.
-    bool noMoves = true; //assume error at first
-
-    for (int i = 0; i < size; i++) //iterate over digits
-    {
-        if (confrows[row][i] || confcols[column][i] || confsqrs[square][i] == false)
-        {
-            noMoves = false; //no error if this is triggered
-        }
-    }
-
-    return ~noMoves;
+/*
+ *     //check to make sure moves are still available.  This runs in linear time,
+ *     //but will run a max of 9 times, and will almost always run far less than
+ *     //that.
+ *     bool noMoves = true; //assume error at first
+ *
+ *     for (int i = 0; i < size; i++) //iterate over digits
+ *     {
+ *         if (confrows[row][i] || confcols[column][i] || confsqrs[square][i] == false)
+ *         {
+ *             noMoves = false; //no error if this is triggered
+ *         }
+ *     }
+ *
+ *     return ~noMoves;
+ */
+	return true;
 }//end function
+
 
 int board::getSquare(int row, int column)
 //returns square number for cell at given indices.
@@ -316,4 +307,87 @@ bool board::isPreFilled(int row, int col)
     }
 
     return false;
+}
+
+void board::findCell(int &row, int &col)
+{
+	row = -1;
+	col = -1;
+	for (int i=0; i<size; i++)
+	{
+		for (int j=0; j<size; j++)
+		{
+			if(getCell(i,j).getValue() == -1)
+			{
+				row = i;
+				col = j;
+				return;
+				//return 1;
+			}
+		}
+	}
+	//return 0;
+}
+
+bool board::isPossible(int row, int col, int dig)
+{
+	bool colbool = confcols[col][dig-1];
+	bool rowbool = confrows[row][dig-1];
+	bool sqrbool = confsqrs[getSquare(row, col)][dig-1];
+
+	/*
+	 * cout<<"Square: "<<getSquare(row, col)<<endl;
+	 * cout<<"Square bool: "<<sqrbool<<endl;
+	 */
+
+	if(!(colbool || rowbool || sqrbool))
+	{
+		return true;
+	}
+	return false;
+}
+
+
+bool board::solve(int count)
+{
+	//cout<<"Count: "<<count<<endl;
+	//printConfs();
+	//int cont;
+	//cin>>cont;
+	bool solved = false;
+
+	if(isSolved())
+	{
+		cout<<"Solved!"<<endl;
+		print();
+		return true;
+	}
+	else
+	{
+		int row = -1;
+		int col = -1;
+		findCell(row, col);
+		for (int i=1; i<=size; i++)
+		{
+ 			if (isPossible(row, col, i))
+			{
+			   	setCell(row, col, i);
+				if(count>60)
+				{
+					print();
+					cout<<"Count: "<<count<<endl;
+				}
+			   	solved = solve(++count);
+				if(!solved)
+				{
+					clearCell(row, col);
+				}
+				else
+				{
+					return true;
+				}
+			}
+		}
+	return false;
+	}
 }
