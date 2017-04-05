@@ -9,6 +9,7 @@
 #include <list>
 #include <fstream>
 #include "cell.h"
+#include<stack>
 
 using namespace std;
 
@@ -24,7 +25,7 @@ public:
     void printConfs(); //prints the conflict lists
     bool isBlank(int, int); //checks if cell is blank
     Cell getCell(int, int); //gets the value of a cell
-    void setCell(int, int, int); //sets a cell to given value
+    bool setCell(int, int, int); //sets a cell to given value
     bool updateConfs(int, int); //updates conflicts and checks for errors
     int getSquare(int, int); //returns the square number from cell index
     bool isSolved(); 	//checks if the puzzle is solved
@@ -32,7 +33,7 @@ public:
 
 	bool isPossible(int, int, int);
 	void findCell(int &row, int &col);
-	bool solve(int count);
+	bool solve(int &count);
 
 private:
 

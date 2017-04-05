@@ -14,7 +14,7 @@ int main()
 {
     ifstream fin;
     // Read the sample grid from the file.
-    string fileName = "sudoku2.txt";
+    string fileName = "medsudoku.txt";
 
     fin.open(fileName.c_str());
 
@@ -31,7 +31,8 @@ int main()
         while (fin && fin.peek() != 'Z')
         {
             b1.initialize(fin); //Initialize board
-			b1.solve(0); //start count at 0
+			int x = 0;
+			b1.solve(x); //start count at 0, must be passed by reference
         }//end loop over file
     }//end try statement
     catch (indexRangeError &ex)
@@ -40,6 +41,6 @@ int main()
         exit(1);
     }
 
-    system("pause");
+    //system("pause");
     return 0;
 }//end main function

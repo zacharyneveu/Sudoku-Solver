@@ -9,6 +9,7 @@
 #include "cell.h"
 #include "board.h"
 #include <string>
+#include<cassert>
 
 using namespace std;
 
@@ -152,18 +153,16 @@ Cell board::getCell(int i, int j)
     }
 }//end function
 
-void board::setCell(int r, int c, int value)
+bool board::setCell(int r, int c, int value)
 //sets cell to value if passed a value
+//returns false if conflict update fails (causes impossible square)
 {
 	b[r][c] = value;
-	updateConfs(r, c);
-
-	/*
-     * else 	//if cell already filled
-     * {
-     *     cout << "That Cell is Already Filled" << endl;
-     * }
-	 */
+	bool worked = updateConfs(r, c);
+	if(worked)
+		return true;
+	else
+		return false;
 }//end function
 
 bool board::isBlank(int i, int j)
@@ -257,22 +256,20 @@ bool board::updateConfs(int row, int column)
         confsqrs[square][value - 1] = true;
     }
 
-/*
- *     //check to make sure moves are still available.  This runs in linear time,
- *     //but will run a max of 9 times, and will almost always run far less than
- *     //that.
- *     bool noMoves = true; //assume error at first
- *
- *     for (int i = 0; i < size; i++) //iterate over digits
- *     {
- *         if (confrows[row][i] || confcols[column][i] || confsqrs[square][i] == false)
- *         {
- *             noMoves = false; //no error if this is triggered
- *         }
- *     }
- *
- *     return ~noMoves;
- */
+	//check to make sure moves are still available.  This runs in linear time,
+	//but will run a max of 9 times, and will almost always run far less than
+	//that.
+	bool noMoves = true; //assume error at first
+
+	for (int i = 0; i < size; i++) //iterate over digits
+	{
+		if (confrows[row][i] || confcols[column][i] || confsqrs[square][i] == false)
+		{
+			noMoves = false; //no error if this is triggered
+		}
+	}
+
+	return ~noMoves;
 	return true;
 }//end function
 
@@ -309,85 +306,143 @@ bool board::isPreFilled(int row, int col)
     return false;
 }
 
+/*
+ * void board::findCell(int &row, int &col)
+ * {
+ *     row = -1;
+ *     col = -1;
+ *     for (int i=0; i<size; i++)
+ *     {
+ *         for (int j=0; j<size; j++)
+ *         {
+ *             if(getCell(i,j).getValue() == -1)
+ *             {
+ *                 row = i;
+ *                 col = j;
+ *                 return;
+ *                 //return 1;
+ *             }
+ *         }
+ *     }
+ *     //return 0;
+ * }
+ */
+
 void board::findCell(int &row, int &col)
+//this function finds a cell that is blank, and has a minimum
+//number of available possible values it can take, the function is passed
+//the row and column by reference, and updat
 {
-	row = -1;
-	col = -1;
-	for (int i=0; i<size; i++)
+	for (int digs=1; digs<=size; digs++) //iterate over each num possible
 	{
-		for (int j=0; j<size; j++)
+		for (int r=0; r<size; r++) //iterate over rows
 		{
-			if(getCell(i,j).getValue() == -1)
+			for (int c=0; c<size; c++) //iterate over cols
 			{
-				row = i;
-				col = j;
-				return;
-				//return 1;
-			}
-		}
-	}
-	//return 0;
-}
+				int count = 0; //stores number of possibilities
+
+				if(getCell(r,c).getValue() != -1) //skip filled cells
+				{
+					continue;
+				}
+
+				for (int dig=1; dig<=size; dig++) //iterates over digits
+				{
+					//if a digit is possible
+					if(isPossible(r,c,dig))
+						count++;
+				}
+
+				if(count == digs) //e.g. if cell has 1 poss
+				{
+					assert(count>0);
+
+					//assign values
+					row = r;
+					col = c;
+
+					return;
+				}
+			}//end loop over cols
+		} //end loop over rows
+	}//end loop over num. possible
+} //end function
 
 bool board::isPossible(int row, int col, int dig)
+//checks if dig is a possibility for the cell at (row, col)
+//cells indexed from dig has range 1-9
 {
+	//-1 because passed dig has range 1-9
 	bool colbool = confcols[col][dig-1];
 	bool rowbool = confrows[row][dig-1];
 	bool sqrbool = confsqrs[getSquare(row, col)][dig-1];
 
-	/*
-	 * cout<<"Square: "<<getSquare(row, col)<<endl;
-	 * cout<<"Square bool: "<<sqrbool<<endl;
-	 */
-
+	//if no conflicts
 	if(!(colbool || rowbool || sqrbool))
 	{
 		return true;
 	}
+	//if there are conflicts
 	return false;
-}
+}//end function
 
 
-bool board::solve(int count)
+bool board::solve(int &count)
 {
 	//cout<<"Count: "<<count<<endl;
 	//printConfs();
-	//int cont;
-	//cin>>cont;
+	/*
+	 * int cont;
+	 * cin>>cont;
+	 */
 	bool solved = false;
 
 	if(isSolved())
 	{
 		cout<<"Solved!"<<endl;
+		cout<<"Count: "<<count<<endl;
 		print();
 		return true;
 	}
 	else
 	{
+		//row and col are passed by reference to findCell to be set
 		int row = -1;
 		int col = -1;
 		findCell(row, col);
+
+		if(row ==-1 || col == -1) //if findCell doesn't find anything
+			return false;
+
 		for (int i=1; i<=size; i++)
 		{
  			if (isPossible(row, col, i))
 			{
-			   	setCell(row, col, i);
-				if(count>60)
+			   	bool setworked = setCell(row, col, i);
+				if(!setworked) //if set caused errors, backtrack
 				{
-					print();
-					cout<<"Count: "<<count<<endl;
+					return false;
+					cout<<"Caused Conflicts"<<endl;
 				}
+
+				if(count %100 ==0)
+				{
+					cout<<"Count: "<<count<<endl;
+					print();
+				}
+
 			   	solved = solve(++count);
 				if(!solved)
 				{
 					clearCell(row, col);
+					//cout<<"Backtracking"<<endl;
 				}
 				else
 				{
 					return true;
 				}
-			}
-		}
+			}//end if ispossible
+		}//end loop over digits
 	return false;
-	}
-}
+	}//end if not solved
+}//end solved function
