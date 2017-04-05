@@ -31,9 +31,9 @@ public:
     bool isSolved(); 	//checks if the puzzle is solved
     bool isPreFilled(int, int); //checks if cell came pre-filled from file
 
-	bool isPossible(int, int, int);
-	bool findCell(int &row, int &col);
-	bool solve(int &count);
+	bool isPossible(int, int, int); //checks if value is possibility in cell
+	bool findCell(int &row, int &col); //finds cell with min. possibilities
+	bool solve(int &count); //recursively solves the board
 
 private:
 

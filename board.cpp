@@ -127,21 +127,6 @@ bool board::isSolved()
 }//end function
 
 
-/*
- * ostream &operator<<(ostream &ostr, vector<Cell> &v)
- * // Overloaded output operator for vector class. Commented because not
- * currently being used for print out.
- * {
- *     for (int i = 0; i < v.size(); i++) {
- *         ostr << (v[i].getValue() == -1 ? "." : to_string(v[i].getValue()));
- *         if (i % 3 == 2) {
- *             ostr << "  ";
- *         }
- *     }
- *    return ostr <<endl;
- * }
- */
-
 Cell board::getCell(int i, int j)
 // Returns the value stored in a cell.  Throws an exception
 // if bad values are passed.
@@ -313,28 +298,6 @@ bool board::isPreFilled(int row, int col)
 
     return false;
 }
-
-/*
- * void board::findCell(int &row, int &col)
- * {
- *     row = -1;
- *     col = -1;
- *     for (int i=0; i<size; i++)
- *     {
- *         for (int j=0; j<size; j++)
- *         {
- *             if(getCell(i,j).getValue() == -1)
- *             {
- *                 row = i;
- *                 col = j;
- *                 return;
- *                 //return 1;
- *             }
- *         }
- *     }
- *     //return 0;
- * }
- */
 
 bool board::findCell(int &row, int &col)
 //this function finds a cell that is blank, and has a minimum
