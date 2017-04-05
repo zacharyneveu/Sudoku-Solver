@@ -147,9 +147,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="Readme.txt" />
+    <Text Include="sudoku.txt" />
+    <Text Include="sudoku1-3.txt" />
     <Text Include="sudoku1.txt" />
     <Text Include="sudoku2.txt" />
     <Text Include="sudoku3.txt" />
+    <Text Include="sudoku4.txt" />
+    <Text Include="sudoku5.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="board.h" />
