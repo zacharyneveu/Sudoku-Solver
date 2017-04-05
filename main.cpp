@@ -8,13 +8,11 @@
 #include <fstream>
 #include "board.h"
 
-int squareNumber(int i, int j);
-
 int main()
 {
     ifstream fin;
     // Read the sample grid from the file.
-    string fileName = "medsudoku.txt";
+    string fileName = "sudoku1.txt";
 
     fin.open(fileName.c_str());
 
@@ -41,6 +39,6 @@ int main()
         exit(1);
     }
 
-    //system("pause");
+    system("pause");
     return 0;
 }//end main function

@@ -328,44 +328,39 @@ bool board::isPreFilled(int row, int col)
  * }
  */
 
-void board::findCell(int &row, int &col)
+bool board::findCell(int &row, int &col)
 //this function finds a cell that is blank, and has a minimum
 //number of available possible values it can take, the function is passed
 //the row and column by reference, and updat
 {
-	for (int digs=1; digs<=size; digs++) //iterate over each num possible
+	int numPoss = 9; //keep track of cheapest cell to solve
+
+	for (int r=0; r<size; r++) //iterate over rows
 	{
-		for (int r=0; r<size; r++) //iterate over rows
+		for (int c=0; c<size; c++) //iterate over cols
 		{
-			for (int c=0; c<size; c++) //iterate over cols
+			int count = 0; //stores number of possibilities
+			if(getCell(r,c).getValue() != -1) //skip filled cells
 			{
-				int count = 0; //stores number of possibilities
-
-				if(getCell(r,c).getValue() != -1) //skip filled cells
-				{
-					continue;
-				}
-
-				for (int dig=1; dig<=size; dig++) //iterates over digits
-				{
-					//if a digit is possible
-					if(isPossible(r,c,dig))
-						count++;
-				}
-
-				if(count == digs) //e.g. if cell has 1 poss
-				{
-					assert(count>0);
-
-					//assign values
-					row = r;
-					col = c;
-
-					return;
-				}
-			}//end loop over cols
-		} //end loop over rows
-	}//end loop over num. possible
+				continue;
+			}
+			for (int dig=1; dig<=size; dig++) //iterates over digits
+			{
+				//if a digit is possible
+				if(isPossible(r,c,dig))
+					count++;
+			}
+			if(count < numPoss) //e.g. if cell has 1 poss
+			{
+				//assign values
+				numPoss = count;
+				row = r;
+				col = c;
+			}
+		}//end loop over cols
+	} //end loop over rows
+	//return true on a successful solve, false if a conflict exists
+	return (numPoss > 0);
 } //end function
 
 bool board::isPossible(int row, int col, int dig)
@@ -409,8 +404,11 @@ bool board::solve(int &count)
 		//row and col are passed by reference to findCell to be set
 		int row = -1;
 		int col = -1;
-		findCell(row, col);
 
+		//If find cell finds any cell with 0 possibilities, backtrace
+		if (!findCell(row, col)) {
+			return false;
+		}
 		if(row ==-1 || col == -1) //if findCell doesn't find anything
 			return false;
 

@@ -32,7 +32,7 @@ public:
     bool isPreFilled(int, int); //checks if cell came pre-filled from file
 
 	bool isPossible(int, int, int);
-	void findCell(int &row, int &col);
+	bool findCell(int &row, int &col);
 	bool solve(int &count);
 
 private:
