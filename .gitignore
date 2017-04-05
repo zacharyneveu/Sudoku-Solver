@@ -82,3 +82,15 @@ Debug/nevdec-4.log
 *.pdb
 *.idb
 *.tlog
+*.log
+*.tlog
+Debug/nevdec-4.tlog/nevdec-4.lastbuildstate
+*.lastbuildstate
+Debug/vc140.pdb
+*.db
+nevdec-4.VC.VC.opendb
+*.suo
+Debug/nevdec-4.pdb
+*.tlog
+Debug/nevdec-4.tlog/link.read.1.tlog
+*.lastbuildstate

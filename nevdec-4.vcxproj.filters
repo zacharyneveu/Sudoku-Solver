@@ -27,6 +27,18 @@
     <Text Include="sudoku3.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="sudoku.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sudoku1-3.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sudoku4.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sudoku5.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="d_except.h">
