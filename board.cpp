@@ -42,28 +42,29 @@ void board::clearCell(int r, int c)
 //This function clears the value in a given cell and updates the relevant
 //conflict lists
 {
-    if (!isPreFilled(r, c)) //make sure square not pre-filled
-    {
-        //temp variables
-        int value = getCell(r, c).getValue() - 1;
-        int square = getSquare(r, c);
+    //check for prefilled only needed for part A
+    //if (!isPreFilled(r, c)) //make sure square not pre-filled
+    //{
+    //temp variables
+    int value = getCell(r, c).getValue() - 1;
+    int square = getSquare(r, c);
 
-        if (value >= 0 && value < size)
-        {
-            //update conflict lists manually because updateConfs() would not know
-            //what value to set to false
-            confrows[r][value] = false;
-            confcols[c][value] = false;
-            confsqrs[square][value] = false;
-        }
-
-        //clear value of square
-        b[r][c].setValue(-1);
-    }
-    else
+    if (value >= 0 && value < size)
     {
-        cout << "Square Was Pre-Filled, cannot be cleared" << endl;
+        //update conflict lists manually because updateConfs() would not know
+        //what value to set to false
+        confrows[r][value] = false;
+        confcols[c][value] = false;
+        confsqrs[square][value] = false;
     }
+
+    //clear value of square
+    b[r][c].setValue(-1);
+    //}
+    // else
+    // {
+    // cout << "Square Was Pre-Filled, cannot be cleared" << endl;
+    // }
 }//end function
 
 void board::initialize(ifstream &fin)
@@ -96,12 +97,7 @@ void board::initialize(ifstream &fin)
                 clearCell(i, j);
             }
 
-            bool worked = updateConfs(i, j); //update conflicts for each cell
-
-            if (worked == false) //a square had all conflicts
-            {
-                cout << "Impossible Puzzle to Solve" << endl;
-            }
+            updateConfs(i, j); //update conflicts for each cell
         }//end loop over cols
     }//end loop over rows
 }//end function
@@ -141,21 +137,12 @@ Cell board::getCell(int i, int j)
     }
 }//end function
 
-bool board::setCell(int r, int c, int value)
+void board::setCell(int r, int c, int value)
 //sets cell to value if passed a value
 //returns false if conflict update fails (causes impossible square)
 {
     b[r][c] = value;
-    bool worked = updateConfs(r, c);
-
-    if (worked)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    updateConfs(r, c);
 }//end function
 
 bool board::isBlank(int i, int j)
@@ -234,36 +221,21 @@ void board::printConfs()
     }//end for loop over digits
 }//end function
 
-bool board::updateConfs(int row, int column)
+void board::updateConfs(int row, int column)
 //This function updates the conflict lists for the row, column, and square of a
 //given square.  Returns false if a conflict list is all true, meaning there is
 //an error on the board.
 {
+    //compute cell value and square number only once and save their values
     int value = b[row][column].getValue();
     int square = getSquare(row, column);
 
-    if (value > 0 && value < 10)
+    if (value > 0 && value < 10) //range check
     {
         confrows[row][value - 1] = true;
         confcols[column][value - 1] = true;
         confsqrs[square][value - 1] = true;
     }
-
-    //check to make sure moves are still available.  This runs in linear time,
-    //but will run a max of 9 times, and will almost always run far less than
-    //that.
-    bool noMoves = true; //assume error at first
-
-    for (int i = 0; i < size; i++) //iterate over digits
-    {
-        if (confrows[row][i] || confcols[column][i] || confsqrs[square][i] == false)
-        {
-            noMoves = false; //no error if this is triggered
-        }
-    }
-
-    return ~noMoves;
-    return true;
 }//end function
 
 
@@ -282,13 +254,16 @@ int board::getSquare(int row, int column)
 }//end function
 
 
-//For part a only. Returns if the selected cell was read in from file, or entered by user.
 bool board::isPreFilled(int row, int col)
+//For part a only. Returns if the selected cell was read in from file, or entered by user.
 {
+    //make sure board has at least one square pre filled
     if (!preFilled.empty())
     {
+        //iterate over items in pre-filled list
         for (int i = 0; i < preFilled.size(); i++)
         {
+            //check if item in preFilled matches row and col
             if (preFilled[i][0] == row && preFilled[i][1] == col)
             {
                 return true;
@@ -296,6 +271,7 @@ bool board::isPreFilled(int row, int col)
         }
     }
 
+    //if no matches in pre-filled list
     return false;
 }
 
@@ -369,7 +345,6 @@ bool board::solve(int &count)
     if (isSolved())
     {
         cout << "Solved!" << endl;
-        //cout << "Count: " << count << endl;
         print();
         return true;
     }
@@ -394,28 +369,13 @@ bool board::solve(int &count)
         {
             if (isPossible(row, col, i))
             {
-                bool setworked = setCell(row, col, i);
-
-                if (!setworked) //if set caused errors, backtrack
-                {
-                    return false;
-                    cout << "Caused Conflicts" << endl;
-                }
-
-				/*
-                 * if (count % 100 == 0)
-                 * {
-                 *     cout << "Count: " << count << endl;
-                 *     print();
-                 * }
-				 */
+                setCell(row, col, i);
 
                 solved = solve(++count);
 
                 if (!solved)
                 {
                     clearCell(row, col);
-                    //cout<<"Backtracking"<<endl;
                 }
                 else
                 {
